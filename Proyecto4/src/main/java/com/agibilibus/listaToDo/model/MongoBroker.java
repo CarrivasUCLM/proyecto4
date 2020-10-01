@@ -1,4 +1,4 @@
-package com.agibilibus.listaToDo.dao;
+package com.agibilibus.listaToDo.model;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
