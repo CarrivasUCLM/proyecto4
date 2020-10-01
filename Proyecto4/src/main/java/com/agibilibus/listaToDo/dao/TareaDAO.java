@@ -1,7 +1,6 @@
 package com.agibilibus.listaToDo.dao;
 
-import java.util.LinkedList;
-import java.util.List;
+
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import com.mongodb.client.FindIterable;
@@ -43,8 +42,7 @@ public class TareaDAO {
 		
 		doc.append("nombre", tarea.getNombre());
 		doc.append("done", tarea.getDone());
-
-	
+		
 		MongoCollection<Document>collection = MongoBroker.get().getCollection("Tareas");
 		collection.insertOne(doc);
 	
