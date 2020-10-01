@@ -34,44 +34,7 @@ public class TareaDAO {
 		return result;
 	}
 	
-	public static boolean selectId(Tarea tarea){
-		boolean result = false;
-		
-		MongoCollection<Document> collection = MongoBroker.get().getCollection("Tareas");
-		
-		Document criterio=new Document();
-		criterio.append("_id", new ObjectId(tarea.getId()) );
-		
-		FindIterable<Document> resultado = collection.find(criterio);
-		Document tarea_bd = resultado.first();
-		
-		try {
-			if (tarea_bd!= null) {
-				tarea.setAll(((ObjectId)tarea_bd.get( "_id" )).toString(), tarea_bd.getString( "nombre" ), tarea_bd.getBoolean( "done" ));
-				result = true;
-				
-		}
-		}catch(Exception e) {System.out.println("id: "+e.toString());}
-		
-		return result;
-	}
 	
-
-	public static List<Tarea> selectAll () {
-		
-		List<Tarea> result = new LinkedList<Tarea>();
-
-		MongoCollection<Document> collection = MongoBroker.get().getCollection("Tareas");
-		MongoCursor<Document> it = collection.find().iterator();
-	
-		while (it.hasNext()) {
-			Document tarea_bd = it.next();
-			Tarea tarea = new Tarea(((ObjectId)tarea_bd.get( "_id" )).toString(), tarea_bd.getString( "nombre" ), tarea_bd.getBoolean( "done" ),user_ddbb.getString("nick"));
-			result.add(tarea);
-		}
-
-		return result;
-	}
 	public static ObjectId insert(Tarea tarea) {
 		Document doc=new Document();
 	
