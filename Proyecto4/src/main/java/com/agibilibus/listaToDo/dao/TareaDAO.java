@@ -3,18 +3,19 @@ package com.agibilibus.listaToDo.dao;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
+
+import com.agibilibus.listaToDo.model.MongoBroker;
+import com.agibilibus.listaToDo.model.Tarea;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
-import model.Tarea;
 
 
 public class TareaDAO {
 
-	public static boolean select(Tarea tarea){
+	public boolean select(Tarea tarea){
 		boolean result = false;
 		
-		MongoCollection<Document> collection = MongoBroker.get().getCollection("Tareas");
+		MongoCollection<Document> collection = MongoBroker.get().getCollection("tareas");
 		
 		Document criterio=new Document();
 		criterio.append("nombre", tarea.getNombre());
@@ -24,7 +25,10 @@ public class TareaDAO {
 		
 		try {
 			if (tarea_db!= null) {
-				tarea.setAll(((ObjectId)tarea_db.get( "_id" )).toString(), tarea_db.getString( "nombre" ), tarea_db.getString( "done" ));
+				tarea.setId(((ObjectId)tarea_db.get( "_id" )).toString());
+				tarea.setNombre(tarea_db.getString("nombre"));
+				tarea.setDone(tarea_db.getBoolean( true ));
+				
 			    result = true;
 				
 		}
@@ -34,16 +38,14 @@ public class TareaDAO {
 	}
 	
 	
-	public static ObjectId insert(Tarea tarea) {
+	public ObjectId insert(Tarea tarea) {
 		Document doc=new Document();
-	
-		if(tarea.getGroup() == null)
-			tarea.setGroup("tareas");
-		
+
 		doc.append("nombre", tarea.getNombre());
-		doc.append("done", tarea.getDone());
+		doc.append("done", tarea.isDone());
 		
-		MongoCollection<Document>collection = MongoBroker.get().getCollection("Tareas");
+		MongoCollection<Document>collection = MongoBroker.get().getCollection("tareas");
+		
 		collection.insertOne(doc);
 	
 		ObjectId id = (ObjectId)doc.get( "_id" );
@@ -52,12 +54,10 @@ public class TareaDAO {
 		return id;
 	}
 	
-	public static boolean delete(Tarea tarea) {
+	public boolean delete(Tarea tarea) {
 		
-		MongoCollection<Document> collection = MongoBroker.get().getCollection("Tareas");
-		return tarea.getId() &&
-				collection.deleteOne(new Document("_id", new ObjectId(tarea.getId()))).wasAcknowledged()
-				&& DAOGroup.deleteTareaGroupByTarea(tarea.getId());
+		MongoCollection<Document> collection = MongoBroker.get().getCollection("tareas");
+		return collection.deleteOne(new Document("_id", new ObjectId(tarea.getId()))).wasAcknowledged();
 	
 	}
 }
