@@ -1,5 +1,6 @@
 package com.agibilibus.listaToDo;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.bson.Document;
@@ -16,18 +17,28 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		Tarea t1 = new Tarea("Comprar pan", false);
-		Tarea t2 = new Tarea("Clase de zumba", false);
-		Tarea t3 = new Tarea("Proyecto de procesos", false);
-
 		TareaDAO dao = new TareaDAO();
+
+		/*Tarea t1 = new Tarea("Comprar pan2", false);
+		Tarea t2 = new Tarea("Clase de zumba", true);
+		Tarea t3 = new Tarea("Proyecto de procesos", false);
+		
 		dao.insert(t1);
 		dao.insert(t2);
 		dao.insert(t3);
 		
 		if (dao.delete(t2))
 			System.out.println("Tarea eliminada con exito.");
+		*/
+		List<Tarea> tareas = dao.selectAll();
+		Iterator<Tarea> it =  tareas.iterator();
 		
+		while(it.hasNext()) {
+			Tarea t = it.next();
+			t.setDone(false);
+			dao.update(t);
+		}
+			
 	}	
 
 	

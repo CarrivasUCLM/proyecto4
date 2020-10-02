@@ -1,6 +1,9 @@
 package com.agibilibus.listaToDo.dao;
 
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
@@ -8,14 +11,32 @@ import com.agibilibus.listaToDo.model.MongoBroker;
 import com.agibilibus.listaToDo.model.Tarea;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 
 
 public class TareaDAO {
-
-	public boolean select(Tarea tarea){
-		boolean result = false;
+	String tabla = "tareas";
+	
+	public List<Tarea> selectAll(){
+		List<Tarea> result = new LinkedList<>();
 		
-		MongoCollection<Document> collection = MongoBroker.get().getCollection("tareas");
+		MongoCollection<Document> collection = MongoBroker.get().getCollection(tabla);
+		MongoCursor<Document> it = collection.find().iterator();
+		
+		while(it.hasNext()) {
+			Document document = it.next();
+			Tarea tarea = new Tarea(document.getString("nombre"),document.getBoolean("done"));
+			tarea.setId(document.get("_id").toString());
+			
+			result.add(tarea);
+		}
+		
+		return result;
+	}
+	
+	public boolean select(Tarea tarea){
+		
+		MongoCollection<Document> collection = MongoBroker.get().getCollection(tabla);
 		
 		Document criterio=new Document();
 		criterio.append("nombre", tarea.getNombre());
@@ -29,12 +50,25 @@ public class TareaDAO {
 				tarea.setNombre(tarea_db.getString("nombre"));
 				tarea.setDone(tarea_db.getBoolean( true ));
 				
-			    result = true;
+			    return true;
 				
 		}
 		}catch(Exception e) {}
 		
-		return result;
+		return false;
+	}
+	
+	public boolean update(Tarea tarea){
+		
+		Document criterio=new Document();
+		criterio.append("_id", new ObjectId(tarea.getId()));
+		
+		Document newValue = new Document();
+		newValue.append("done", tarea.isDone());
+		
+		MongoCollection<Document> collection = MongoBroker.get().getCollection(tabla);
+		
+		return collection.updateOne(criterio, new Document("$set",newValue)).wasAcknowledged();
 	}
 	
 	
@@ -44,7 +78,7 @@ public class TareaDAO {
 		doc.append("nombre", tarea.getNombre());
 		doc.append("done", tarea.isDone());
 		
-		MongoCollection<Document>collection = MongoBroker.get().getCollection("tareas");
+		MongoCollection<Document>collection = MongoBroker.get().getCollection(tabla);
 		
 		collection.insertOne(doc);
 	
@@ -56,7 +90,7 @@ public class TareaDAO {
 	
 	public boolean delete(Tarea tarea) {
 		
-		MongoCollection<Document> collection = MongoBroker.get().getCollection("tareas");
+		MongoCollection<Document> collection = MongoBroker.get().getCollection(tabla);
 		return collection.deleteOne(new Document("_id", new ObjectId(tarea.getId()))).wasAcknowledged();
 	
 	}
