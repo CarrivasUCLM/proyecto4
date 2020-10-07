@@ -1,6 +1,7 @@
 package com.agibilibus.listaToDo.model;
 
-import org.springframework.data.mongodb.core.mapping.Document;
+
+import org.bson.Document;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
@@ -16,9 +17,9 @@ public class MongoBroker {
 	private MongoDatabase db;
 	
 	private MongoBroker(){
-		this.uri = new MongoClientURI("mongodb://proyecto0:proyecto0@proyecto0.1ylll.mongodb.net/proyecto0");
+		this.uri = new MongoClientURI("mongodb://proyecto0:proyecto0@cluster0-shard-00-00.wk722.mongodb.net:27017,cluster0-shard-00-01.wk722.mongodb.net:27017,cluster0-shard-00-02.wk722.mongodb.net:27017/db0?ssl=true&replicaSet=atlas-z5zrmr-shard-0&authSource=admin&retryWrites=true&w=majority");
 		this.mongoClient= new MongoClient(uri);
-        this.db= mongoClient.getDatabase("proyecto0");
+        this.db= mongoClient.getDatabase("db0");
 	}
 	
 	public static MongoBroker get(){
