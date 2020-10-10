@@ -22,7 +22,7 @@ public class Main {
 		/*Tarea t1 = new Tarea("Comprar pan2", false);
 		Tarea t2 = new Tarea("Clase de zumba", true);
 		Tarea t3 = new Tarea("Proyecto de procesos", false);*/
-		Tarea t4 = new Tarea("Prueba 1", false);
+		Tarea t4 = new Tarea("Prueba 6", false);
 		
 		//dao.insert(t1);
 		//dao.insert(t2);
