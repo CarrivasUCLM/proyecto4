@@ -21,16 +21,18 @@ function agregarFila() {
 							+ "<div class='form-check'> <input class='form-check-input position-static' type='checkbox' value='option1' aria-label='...' id='checkDone'></div>"
 							+ "</td>"
 							+ "<td class='text-center'>"
-							+ "<div class='btn btn-primary' onclick='addTarea()'>Save</div>"
+							+ "<div class='btn btn-primary' onclick='addTarea(this)'>Save</div>"
 							+ "<div class='btn btn-danger' onclick='EliminarFila(this)'>Delete</div>"
 							+ "</td>" + "</tr>")
 }
 
-function addTarea() {
+function addTarea(fila) {
+	
+	
 	var info = {
 		type : "AddTarea",
-		tarea : this.tareaName.value,
-		done : this.checkDone.value
+		tarea : $(fila).parents("tr")[0].firstChild.children.tareaName.value,
+		done : checkDone.value
 	};
 	var data = {
 		data : JSON.stringify(info),
