@@ -5,10 +5,10 @@ $(document).ready(function() {
 
 });
 
-function EliminarFila(fila) {
+/*function EliminarFila(fila) {
 	$(fila).parents("tr").remove();
 
-}
+}*/
 
 function agregarFila() {
 	$("#tabla")
@@ -26,7 +26,7 @@ function agregarFila() {
 							+ "</td>"
 							+ "<td class='text-center'>"
 							+ "<div class='btn btn-primary' onclick='addTarea(document.getElementById('nombre')'>Save</div>"
-							+ "<div class='btn btn-danger' onclick='EliminarFila(this)'>Delete</div>"
+							+ "<div class='btn btn-danger' onclick='deleteTarea(document.getElementById('nombre')'>Delete</div>"
 							+ "</td>" + "</tr>")
 }
 
@@ -52,6 +52,45 @@ function addTarea() {
 	$.ajax(data);
 }
 
-function loadTasks() {
+function deleteTarea() {
+	var info = {
+		type : "DeleteTarea",
+		tarea : tareaName.value,
+		done : checkDone.value
+	};
+	var data = {
+		data : JSON.stringify(info),
+		url : "deletetarea",
+		type : "post",
+		contentType : 'application/json',
+		dataType : 'json',
+		success : function() {
+			alert("OK");
+		},
+		error : function(response) {
+			alert(response.responseText);
+		}
+	};
+	$.ajax(data);
+}
 
+function loadTasks() {
+	var data = {
+
+			url : "loadTareas",
+			type : "get",
+			
+			success : function(response) {
+				var options ="<table>";
+				for (var i=0; i<response.length; i++) {
+					options = options + "<tr><td>" + response[i].nombre + "</td></tr>";
+				}
+				options = option + "</table>";
+				selectAll.innerHTML = options;
+			},
+			error : function(response) {
+				alert(response.message);
+			}
+		};
+		$.ajax(data);
 }
