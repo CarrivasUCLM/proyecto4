@@ -6,9 +6,8 @@ import java.util.List;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
 
+import com.agibilibus.listaToDo.model.MongoBroker;
 import com.agibilibus.listaToDo.model.Tarea;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;

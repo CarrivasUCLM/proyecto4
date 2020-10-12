@@ -8,75 +8,39 @@ import org.springframework.stereotype.Component;
 
 import com.agibilibus.listaToDo.dao.TareaDAO;
 
-
 import org.json.JSONArray;
 import org.json.JSONException;
 
-
-
 @Component
 public class Manager {
-
-	@Autowired
-	private TareaDAO tareaDAO;
+	private TareaDAO tareaDAO = new TareaDAO();
 
 	private JSONArray listTareas;
 
-	
 	@Bean
 	public static Manager get() {
 		return ManagerHolder.singleton;
 	}
-	
+
 	private static class ManagerHolder {
 		static Manager singleton = new Manager();
 	}
-	
+
 	private Manager() {
-		
-		
-	}
-	
-	public List<Tarea> getTareas() {
-		return (List<Tarea>) tareaDAO.findAll();
+
 	}
 
 	public void addTarea(String nombreTarea) {
 		Tarea t = new Tarea(nombreTarea, false);
 		tareaDAO.insert(t);
-
 	}
 
 	public JSONArray loadTasks() throws JSONException {
-		// TODO Auto-generated method stub
 		JSONArray result = new JSONArray();
-		
 		List<Tarea> tareas = tareaDAO.selectAll();
-		for(Tarea t : tareas)
+		for (Tarea t : tareas)
 			result.put(t.toJSON());
 		return result;
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
