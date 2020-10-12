@@ -35,5 +35,12 @@ public class Controller {
 		Manager.get().addTarea(nombreTarea);
 		
 	}
+	
+	@PostMapping("/removeTarea")
+	public void removeTarea(@RequestBody Map<String, Object> datosTarea)  {
+		Tarea t = new Tarea();
+		Manager.get().removeTarea(t);
+		
+	}
 }
 

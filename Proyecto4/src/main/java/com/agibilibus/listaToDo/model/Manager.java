@@ -38,13 +38,18 @@ public class Manager {
 	}
 	
 	public List<Tarea> getTareas() {
-		return (List<Tarea>) tareaDAO.findAll();
+		return (List<Tarea>) tareaDAO.selectAll();
 	}
 
 	public void addTarea(String nombreTarea) {
 		Tarea t = new Tarea(nombreTarea, false);
 		tareaDAO.insert(t);
 
+	}
+
+	public void removeTarea(Tarea t) {
+		tareaDAO.delete(t);
+		
 	}
 
 	public JSONArray loadTasks() throws JSONException {
@@ -56,6 +61,10 @@ public class Manager {
 			result.put(t.toJSON());
 		return result;
 	}
+
+	
+
+	
 
 }
 
