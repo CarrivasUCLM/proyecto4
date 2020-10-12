@@ -38,7 +38,7 @@ public class Manager {
 	}
 	
 	public List<Tarea> getTareas() {
-		return (List<Tarea>) tareaDAO.findAll();
+		return null;
 	}
 
 	public void addTarea(String nombreTarea) {
