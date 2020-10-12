@@ -23,18 +23,6 @@
                         <th scope="col">Acciones</th>
                     </tr>
                 </thead>
-                <tbody>
-					<!-- ko foreach : { data: tasks, as : "task" } -->
-					<tr> 
-			             <td> <label data-bind="html: id" ></label></td>  
-			             <td> <label data-bind="html: nombre"></label> </td>
-			             <td> <div class='form-check'> <input class='form-check-input position-static' type='checkbox' value='option1' aria-label='...'></div></td>
-			             <td class='text-center'>
-			                 <div class='btn btn-danger' onclick='EliminarFila(this)'>Delete</div>
-			             </td>
-        			 </tr>
-					<!-- /ko -->
-                </tbody>
             </table>
             </br>
             <p class="text-right">

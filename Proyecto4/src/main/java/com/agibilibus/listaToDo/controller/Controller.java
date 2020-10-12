@@ -31,7 +31,7 @@ public class Controller {
 	@PostMapping("/addTarea")
 	public void addTarea(@RequestBody Map<String, Object> datosTarea) throws JSONException {
 		JSONObject jso = new JSONObject(datosTarea);	
-		String nombreTarea = jso.getString("nombreTarea");
+		String nombreTarea = jso.getString("tarea");
 		Manager.get().addTarea(nombreTarea);
 		
 	}
