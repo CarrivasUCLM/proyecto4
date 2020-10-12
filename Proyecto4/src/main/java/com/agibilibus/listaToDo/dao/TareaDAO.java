@@ -6,17 +6,18 @@ import java.util.List;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-import com.agibilibus.listaToDo.model.MongoBroker;
 import com.agibilibus.listaToDo.model.Tarea;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 
 
-public class TareaDAO {
+public class TareaDAO{
 	String tabla = "tareas";
-	
+
 	public List<Tarea> selectAll(){
 		List<Tarea> result = new LinkedList<>();
 		
@@ -44,7 +45,7 @@ public class TareaDAO {
 		FindIterable<Document> resultado = collection.find(criterio);
 		Document tarea_db = resultado.first();
 		
-		try {
+
 			if (tarea_db!= null) {
 				tarea.setId(((ObjectId)tarea_db.get( "_id" )).toString());
 				tarea.setNombre(tarea_db.getString("nombre"));
@@ -53,7 +54,6 @@ public class TareaDAO {
 			    return true;
 				
 		}
-		}catch(Exception e) {}
 		
 		return false;
 	}
@@ -75,8 +75,7 @@ public class TareaDAO {
 	public ObjectId insert(Tarea tarea) {
 		Document doc=new Document();
 
-		doc.append("nombre", tarea.getNombre());
-		doc.append("done", tarea.isDone());
+		doc.append("nombre", tarea.getNombre()).append("done", tarea.isDone());
 		
 		MongoCollection<Document>collection = MongoBroker.get().getCollection(tabla);
 		
